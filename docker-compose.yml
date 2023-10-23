@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tailor-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - 5000:5000
+    volumes:
+      - ./:/tailor-api
+      - /tailor-api/node_modules
+
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=tailor-db
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
